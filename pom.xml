@@ -1,0 +1,56 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>labo.jim</groupId>
+	<artifactId>schematron-compiler-test-project</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>eu.els.oss</groupId>
+				<artifactId>schematron-to-xslt-compiler-maven-plugin</artifactId>
+				<version>1.0.0</version>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>compile-schematron-to-xslt</goal>
+						</goals>
+						<configuration>
+							<schematronCompilationSets>
+								<schematronCompilationSet>
+									<dir>src/main/resources/</dir>
+									<includes>
+										<include>*.sch</include>
+									</includes>
+									<excludes>
+										<exclude>not-this-one.sch</exclude>
+									</excludes>
+									<outputDir>target/compiled/schematron</outputDir>
+									<fileMappers>
+										<fileMapper
+											implementation="org.codehaus.plexus.components.io.filemappers.RegExpFileMapper">
+											<pattern>^(.*).ISO.sch$</pattern>
+											<replacement>les-ISOs/$1-whaou-an-ISO-schematron.xsl</replacement>
+										</fileMapper>
+									</fileMappers>
+								</schematronCompilationSet>
+							</schematronCompilationSets>
+							<catalogs>
+								<catalog>catalog.xml</catalog>
+							</catalogs>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>eu.els.oss</groupId>
+						<artifactId>jing</artifactId>
+						<version>20180404</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+</project>
